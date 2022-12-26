@@ -1,0 +1,34 @@
+:any-link {
+    text-decoration: none;
+    
+  }
+p {
+    color: gray;
+}
+h1 {
+    color:Black;
+}
+h2 {
+    color:Black;
+}
+h4{
+    color: gray;
+}
+.background {
+    background: linear-gradient(to top, #53a8b6, #5585b5);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    min-height: 100vh;
+}
+i {
+    transform: scale(2);
+}
+html{
+    height: 100%;
+}
+
+.table-row:hover {
+    background-color: #5585b5;
+    opacity: 75%;
+  }
