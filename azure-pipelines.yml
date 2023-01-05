@@ -38,3 +38,13 @@ steps:
     artifactName: npm
   displayName: 'Publish npm artifact'
 
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Azure for Students(2a5141e6-54fb-4506-b600-4eded22b4219)'
+    appType: 'webAppLinux'
+    WebAppName: 'WorkDemo'
+    deployToSlotOrASE: true
+    ResourceGroupName: 'Demo-For-Work'
+    SlotName: 'production'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
