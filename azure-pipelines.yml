@@ -22,8 +22,6 @@ stages:
         npm run build
       displayName: 'Build React application'
 
-
-
     - task: CopyFiles@2
       inputs:
         sourceFolder: '$(Build.SourcesDirectory)'
@@ -56,7 +54,7 @@ stages:
       inputs:
         sourceFolder: '$(Build.SourcesDirectory)/build'
         contents: '**/*.zip' 
-        targetFolder: $(Build.ArtifactStagingDirectory)/zip
+        targetFolder: $(Build.ArtifactStagingDirectory)/npm
       displayName: 'Copy zip file'
     - task: AzureRmWebAppDeployment@4
       inputs:
