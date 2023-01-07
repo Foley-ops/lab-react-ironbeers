@@ -69,6 +69,6 @@ stages:
         appType: 'webApp'
         WebAppName: 'webapp-demo-pipeline'
         ResourceGroupName: 'Pipeline-Tester'
-        packageForLinux: '$(Pipeline.Workspace)/zip/**/*.zip'
+        packageForLinux: '$(System.DefaultWorkingDirectory)/zip/**/*.zip'
         UseWebDeploy: true
       displayName: 'Deploy to Azure Web App'
