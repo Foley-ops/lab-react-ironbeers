@@ -20,7 +20,8 @@ stages:
 
     - script: |
         npm run build
-      displayName: 'npm build'
+      displayName: 'Build React application'
+
 
 
     - task: CopyFiles@2
