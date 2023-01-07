@@ -13,7 +13,6 @@ stages:
       inputs:
         versionSpec: '16.x'
       displayName: 'Install Node.js'
-      workingDirectory: '$(Build.SourcesDirectory)'
 
     - script: |
         npm install
@@ -30,7 +29,6 @@ stages:
         artifactName: 'zip'
         artifactType: 'container'
         pathToPublish: '$(Build.SourcesDirectory)/build'
-      version: '1.*'
 
     - task: CopyFiles@2
       inputs:
@@ -38,7 +36,6 @@ stages:
         contents: '*.tgz' 
         targetFolder: '$(Build.ArtifactStagingDirectory)/npm'
       displayName: 'Copy npm package'
-      version: '2.*'
 
     - task: CopyFiles@2
       inputs:
@@ -46,14 +43,11 @@ stages:
         contents: 'package.json' 
         targetFolder: '$(Build.ArtifactStagingDirectory)/npm'
       displayName: 'Copy package.json'
-      version: '2.*'   
-
     - task: PublishPipelineArtifact@1
       inputs:
         targetPath: '$(Build.ArtifactStagingDirectory)/npm'
         artifactName: npm
       displayName: 'Publish npm artifact'
-      version: '1.*'
 
 - stage: Deploy
   displayName: Deploy to Azure Web App
@@ -67,7 +61,6 @@ stages:
       inputs:
         artifact: 'zip'
       displayName: 'Download artifact'
-      version: '2.*'
 
     - task: AzureRmWebAppDeployment@4
       inputs:
@@ -79,4 +72,3 @@ stages:
         packageForLinux: '$(Pipeline.Workspace)/zip/**/*.zip'
         UseWebDeploy: true
       displayName: 'Deploy to Azure Web App'
-      version: '4.*'
