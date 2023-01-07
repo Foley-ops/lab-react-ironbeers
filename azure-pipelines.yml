@@ -59,7 +59,7 @@ stages:
     steps:
     - task: DownloadPipelineArtifact@2
       inputs:
-        artifact: 'zip'
+        artifact: 'npm'
       displayName: 'Download artifact'
 
     - task: AzureRmWebAppDeployment@4
@@ -69,6 +69,6 @@ stages:
         appType: 'webApp'
         WebAppName: 'webapp-demo-pipeline'
         ResourceGroupName: 'Pipeline-Tester'
-        packageForLinux: '$(System.DefaultWorkingDirectory)/zip/**/*.zip'
+        packageForLinux: '$(System.DefaultWorkingDirectory)/npm/*.tgz'
         UseWebDeploy: true
       displayName: 'Deploy to Azure Web App'
