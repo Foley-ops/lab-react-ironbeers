@@ -22,6 +22,12 @@ stages:
         npm run build
       displayName: 'Build React application'
 
+    - task: PublishBuildArtifacts@1
+      inputs:
+        artifactName: 'zip'
+        artifactType: 'container'
+        pathToPublish: '$(Build.SourcesDirectory)/build'
+
     - task: CopyFiles@2
       inputs:
         sourceFolder: '$(Build.SourcesDirectory)'
@@ -50,16 +56,15 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-    - task: CopyFiles@2
+    - task: DownloadPipelineArtifact@2
       inputs:
-        sourceFolder: '$(Build.SourcesDirectory)/build'
-        contents: '**/*.zip' 
-        targetFolder: $(Build.ArtifactStagingDirectory)/npm
-      displayName: 'Copy zip file'
+        artifact: 'zip'
+        targetPath: '$(Pipeline.Workspace)/zip'
+      displayName: 'Download zip artifact'
     - task: AzureRmWebAppDeployment@4
       inputs:
         ConnectionType: 'AzureRM'
         azureSubscription: 'Azure for Students(2a5141e6-54fb-4506-b600-4eded22b4219)'
         appType: 'webApp'
         WebAppName: 'webapp-demo-pipeline'
-        packageForLinux: '$(Build.ArtifactStagingDirectory)/zip/**/*.zip'
+        packageForLinux: '$(Pipeline.Workspace)/zip/**/*.zip'
