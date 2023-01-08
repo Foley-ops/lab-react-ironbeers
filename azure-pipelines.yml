@@ -28,11 +28,11 @@ stages:
       inputs:
         artifactName: 'zip'
         artifactType: 'container'
-        pathToPublish: '$(Build.SourcesDirectory)/build/*.zip'
+        pathToPublish: '$(Build.SourcesDirectory)/build'
 
     - task: CopyFiles@2
       inputs:
-        sourceFolder: '$(Build.SourcesDirectory)'
+        sourceFolder: '$(Build.SourcesDirectory)/build'
         contents: '*.tgz' 
         targetFolder: '$(Build.ArtifactStagingDirectory)/npm'
       displayName: 'Copy npm package'
