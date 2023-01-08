@@ -56,10 +56,14 @@ stages:
         artifact: npm
       displayName: 'Download npm package'
 
+    - task: Npm@1
+      inputs:
+        command: 'install'
+
     - task: AzureRmWebAppDeployment@4
       inputs:
         ConnectionType: 'AzureRM'
         azureSubscription: 'Azure for Students(2a5141e6-54fb-4506-b600-4eded22b4219)'
         appType: 'webApp'
         WebAppName: 'Bubbles-name'
-        packageForLinux: '$(Build.SourcesDirectory)/build'
+        packageForLinux: '$(Build.SourcesDirectory)/npm'
