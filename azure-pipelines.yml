@@ -54,6 +54,7 @@ stages:
   dependsOn: Build
   jobs:
   - job: Deploy
+
     pool:
       vmImage: 'ubuntu-latest'
     steps:
@@ -65,10 +66,7 @@ stages:
     - task: AzureRmWebAppDeployment@4
       inputs:
         ConnectionType: 'AzureRM'
-        azureSubscription: 'Pipeline-tester-rg'
+        azureSubscription: 'Azure for Students(2a5141e6-54fb-4506-b600-4eded22b4219)'
         appType: 'webApp'
-        WebAppName: 'webapp-demo-pipeline'
-        ResourceGroupName: 'Pipeline-Tester'
-        packageForLinux: '$(System.DefaultWorkingDirectory)/npm/*.tgz'
-        UseWebDeploy: true
-      displayName: 'Deploy to Azure Web App'
+        WebAppName: 'YamlConfig'
+        packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
