@@ -48,25 +48,3 @@ stages:
         targetPath: '$(Build.ArtifactStagingDirectory)/npm'
         artifactName: npm
       displayName: 'Publish npm artifact'
-
-- stage: Deploy
-  displayName: Deploy to Azure Web App
-  dependsOn: Build
-  jobs:
-  - job: Deploy
-
-    pool:
-      vmImage: 'ubuntu-latest'
-    steps:
-    - task: DownloadPipelineArtifact@2
-      inputs:
-        artifact: 'zip'
-      displayName: 'Download artifact'
-
-    - task: AzureRmWebAppDeployment@4
-      inputs:
-        ConnectionType: 'AzureRM'
-        azureSubscription: 'Azure for Students(2a5141e6-54fb-4506-b600-4eded22b4219)'
-        appType: 'webApp'
-        WebAppName: 'YamlConfig'
-        packageForLinux: '$(Build.SourcesDirectory)/build'
