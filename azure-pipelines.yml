@@ -24,12 +24,6 @@ stages:
       displayName: 'Build React application'
       workingDirectory: '$(Build.SourcesDirectory)'
 
-    - task: PublishBuildArtifacts@1
-      inputs:
-        artifactName: 'zip'
-        artifactType: 'container'
-        pathToPublish: '$(Build.SourcesDirectory)/build'
-
     - task: CopyFiles@2
       inputs:
         sourceFolder: '$(Build.SourcesDirectory)/build'
@@ -48,3 +42,24 @@ stages:
         targetPath: '$(Build.ArtifactStagingDirectory)/npm'
         artifactName: npm
       displayName: 'Publish npm artifact'
+
+- stage: Deploy
+  displayName: Deploy to Azure Web App
+  dependsOn: Build
+  jobs:
+  - job: Deploy
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        artifact: npm
+      displayName: 'Download npm package'
+
+    - task: AzureRmWebAppDeployment@4
+      inputs:
+        ConnectionType: 'AzureRM'
+        azureSubscription: 'Azure for Students(2a5141e6-54fb-4506-b600-4eded22b4219)'
+        appType: 'webApp'
+        WebAppName: 'Bubbles-name'
+        packageForLinux: '$(Build.SourcesDirectory)/build'
