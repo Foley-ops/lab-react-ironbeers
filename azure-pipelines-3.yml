@@ -23,8 +23,6 @@ variables:
   # Retry timeout for Azure App Service deploy task
   appservicedeploy.retrytimeout: 40
 
-  # Timeout for entire pipeline
-  timeoutInMinutes: 40
 
 stages:
 - stage: Build
@@ -71,7 +69,17 @@ stages:
               packageForLinux: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
               RuntimeStack: 'NODE|16-lts'
               StartupCommand: 'npm run start'
-              ScriptType: 'Inline Script'
-              InlineScript: |
+
+          - task: CmdLine@2
+            displayName: 'Install dependencies'
+            inputs:
+              script: |
+                cd $(System.DefaultWorkingDirectory)
                 npm install
+
+          - task: CmdLine@2
+            displayName: 'Build application'
+            inputs:
+              script: |
+                cd $(System.DefaultWorkingDirectory)
                 npm run build --if-present
