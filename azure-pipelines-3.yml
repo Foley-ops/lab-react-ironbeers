@@ -65,15 +65,7 @@ stages:
               packageForLinux: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
               RuntimeStack: 'NODE|16-lts'
               StartupCommand: 'npm run start'
-
-          - task: CmdLine@2
-            displayName: 'Install dependencies'
-            inputs:
-              script: |
+              ScriptType: 'Inline Script'
+              InlineScript: |
                 npm install
-
-          - task: CmdLine@2
-            displayName: 'Build application'
-            inputs:
-              script: |
                 npm run build --if-present
