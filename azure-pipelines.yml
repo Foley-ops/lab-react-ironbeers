@@ -55,16 +55,6 @@ stages:
           runOnce:
             deploy:
               steps:
-                - task: AzureRmWebAppDeployment@4
-                  displayName: "Azure App Service Deploy: devops-tutorial-cdq"
-                  inputs:
-                    azureSubscription: $(azureSubscription)
-                    appType: webAppLinux
-                    WebAppName: $(webAppName)
-                    packageForLinux: "$(Pipeline.Workspace)/drop/$(Build.BuildId).zip"
-                    RuntimeStack: "NODE|16-lts"
-                    StartupCommand: "npm run start"
-
                 - task: CmdLine@2
                   displayName: "Install dependencies"
                   inputs:
@@ -76,3 +66,13 @@ stages:
                   inputs:
                     script: |
                       npm run build --if-present
+
+                - task: AzureRmWebAppDeployment@4
+                  displayName: "Azure App Service Deploy: devops-tutorial-cdq"
+                  inputs:
+                    azureSubscription: $(azureSubscription)
+                    appType: webAppLinux
+                    WebAppName: $(webAppName)
+                    packageForLinux: "$(Pipeline.Workspace)/drop/$(Build.BuildId).zip"
+                    RuntimeStack: "NODE|16-lts"
+                    StartupCommand: "npm run start"
