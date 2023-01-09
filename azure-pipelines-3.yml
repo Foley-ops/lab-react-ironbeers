@@ -70,12 +70,10 @@ stages:
             displayName: 'Install dependencies'
             inputs:
               script: |
-                cd $(System.DefaultWorkingDirectory)
                 npm install
 
           - task: CmdLine@2
             displayName: 'Build application'
             inputs:
               script: |
-                cd $(System.DefaultWorkingDirectory)
                 npm run build --if-present
