@@ -59,6 +59,7 @@ stages:
                   displayName: "Install dependencies"
                   inputs:
                     script: |
+                      cd "$(Pipeline.Workspace)"
                       npm install
 
                 - task: CmdLine@2
