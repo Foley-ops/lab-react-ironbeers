@@ -20,10 +20,6 @@ variables:
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
 
-  # Retry timeout for Azure App Service deploy task
-  appservicedeploy.retrytimeout: 40
-
-
 stages:
 - stage: Build
   displayName: Build stage
