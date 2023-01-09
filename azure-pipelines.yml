@@ -59,7 +59,7 @@ stages:
                   displayName: "Install dependencies"
                   inputs:
                     script: |
-                      cd "$(Pipeline.Workspace)"
+                      cd $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
                       npm install
 
                 - task: CmdLine@2
