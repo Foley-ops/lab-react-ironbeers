@@ -31,7 +31,7 @@ stages:
         steps:
           - task: NodeTool@0
             inputs:
-              versionSpec: "16.x"
+              versionSpec: "18.x"
             displayName: "Install Node.js"
 
           - task: ArchiveFiles@2
@@ -42,6 +42,19 @@ stages:
               archiveType: zip
               archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
               replaceExistingArchive: true
+
+          - task: CmdLine@2
+            displayName: "Install dependencies"
+            inputs:
+              script: |
+                cd $(System.DefaultWorkingDirectory)
+                npm install
+
+          - task: CmdLine@2
+            displayName: "Build application"
+            inputs:
+              script: |
+                npm run build --if-present
 
           - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
             artifact: drop
@@ -60,19 +73,6 @@ stages:
           runOnce:
             deploy:
               steps:
-                - task: CmdLine@2
-                  displayName: "Install dependencies"
-                  inputs:
-                    script: |
-                      cd $(System.DefaultWorkingDirectory)
-                      npm install
-
-                - task: CmdLine@2
-                  displayName: "Build application"
-                  inputs:
-                    script: |
-                      npm run build --if-present
-
                 - task: AzureRmWebAppDeployment@4
                   displayName: "Azure App Service Deploy: devops-tutorial-cdq"
                   inputs:
@@ -80,5 +80,5 @@ stages:
                     appType: webAppLinux
                     WebAppName: $(webAppName)
                     packageForLinux: "$(Pipeline.Workspace)/drop/$(Build.BuildId).zip"
-                    RuntimeStack: "NODE|16-lts"
+                    RuntimeStack: "NODE|18-lts"
                     StartupCommand: "npm run start"
