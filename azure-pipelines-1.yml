@@ -1,24 +1,18 @@
-# Node.js React Web App to Linux on Azure
-# Build a Node.js React app and deploy it to Azure as a Linux web app.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
-
 trigger:
-- master
+  - master
 
 variables:
-
   # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: '576cd2c4-fb05-4fed-a37c-13eca88c19ce'
+  azureSubscription: "6d4ddebb-a18f-4c1a-ac8c-60b65613c4b1"
 
   # Web app name
-  webAppName: 'devops-nodejs-demo'
+  webAppName: "devops-tutorial-cdq"
 
   # Environment name
-  environmentName: 'devops-nodejs-demo'
+  environmentName: "devops-tutorial-cdq"
 
   # Agent VM image name
-  vmImageName: 'ubuntu-latest'
+  vmImageName: "ubuntu-latest"
 
 stages:
   - stage: Build
@@ -44,6 +38,19 @@ stages:
               archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
               replaceExistingArchive: true
 
+          - task: CmdLine@2
+            displayName: "Install dependencies"
+            inputs:
+              script: |
+                cd $(System.DefaultWorkingDirectory)
+                npm install
+
+          - task: CmdLine@2
+            displayName: "Build application"
+            inputs:
+              script: |
+                npm run build --if-present
+
           - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
             artifact: drop
 
@@ -61,19 +68,6 @@ stages:
           runOnce:
             deploy:
               steps:
-                - task: CmdLine@2
-                  displayName: "Install dependencies"
-                  inputs:
-                    script: |
-                      cd $(System.DefaultWorkingDirectory)
-                      npm install
-
-                - task: CmdLine@2
-                  displayName: "Build application"
-                  inputs:
-                    script: |
-                      npm run build --if-present
-
                 - task: AzureRmWebAppDeployment@4
                   displayName: "Azure App Service Deploy: devops-tutorial-cdq"
                   inputs:
